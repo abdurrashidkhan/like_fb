@@ -1,11 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Navbar from './common/Navbar/Navbar';
+import RequireAuth from './Auth/RequireAuth/RequireAuth';
 
 function App() {
   return (
-    <div className="">
-      <h1>twilwindcss woring</h1>
-    </div>
+    <>
+    <Navbar></Navbar>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/inventories" element={
+          <RequireAuth>
+            {/* <TotalProducts /> */}
+          </RequireAuth>
+        } />
+        </Routes>
+    </>
   )
 }
 
