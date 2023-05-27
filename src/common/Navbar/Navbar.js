@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BiUserCircle } from "react-icons/bi";
-import { FaBell } from "react-icons/fa";
+import { FcAbout } from "react-icons/fc";
+import { FiMessageSquare } from "react-icons/fi";
 import { RiArrowDownSFill, RiMoonFoggyFill } from "react-icons/ri";
+
 import { CiLight } from "react-icons/ci";
+import { AiFillFire, AiFillHome, AiOutlineFieldTime } from 'react-icons/ai';
 import Active from "../Active/Active";
 
 import './Navbar.css'
@@ -31,21 +34,22 @@ const Navbar = () => {
     setTheme(theme === "dark" ? "light" : "dark");
     console.log('clicked');
   };
-  const [navbarBg, setNavbar] = useState(false);
-  const changeBg = () => {
-    if (window.scrollY >= 50) {
-      setNavbar(true);
-    } else {
-      setNavbar(false);
-    }
-  };
-  window.addEventListener("scroll", changeBg);
+
+
+  // const [navbarBg, setNavbar] = useState(false);
+
+  // const changeBg = () => {
+  //   if (window.scrollY >= 50) {
+  //     setNavbar(true);
+  //   } else {
+  //     setNavbar(false);
+  //   }
+  // };
+  // window.addEventListener("scroll", changeBg);
 
 
   return (
-    <nav className={`${
-      navbarBg ? 'bg-[#000000c9]  shadow-2xl ' : 'bg-transparent'
-      }   z-[99999] fixed w-full ease-in-out duration-700`}>
+    <nav className='bg-[#000000c9]  shadow-2xl '>
       <div className="container mx-auto px-2">
         {/* navbar */}
         <div className="">
@@ -145,7 +149,7 @@ const Navbar = () => {
                 to="/"
                 className=" normal-case  text-sm sm:text-xl font-extrabold font-['Kalam'] text-[#FF5733] "
               >
-                Rashid Khan
+                Photo Frame
               </Active>
             </div>
             <div className="navbar-center hidden lg:flex">
@@ -153,7 +157,7 @@ const Navbar = () => {
               <ul className="menu menu-horizontal p-0 ">
               <li>
                     <Active className="text-slate-600 font-semibold" to="">
-                      Home
+                      <AiFillHome className="text-3xl"></AiFillHome>
                     </Active>
                   </li>
                   {/* <li tabIndex={0}>
@@ -173,49 +177,33 @@ const Navbar = () => {
                   <li>
                     <Active
                       className="text-slate-600 font-semibold"
+                      to={"/viral"}
+                    >
+                      <AiOutlineFieldTime className="text-3xl"/>
+                    </Active>
+                  </li>
+                  <li>
+                    <Active
+                      className="text-slate-600 font-semibold"
+                      to={"/viral"}
+                    >
+                      <AiFillFire className="text-3xl"></AiFillFire>
+                    </Active>
+                  </li>
+                  <li>
+                    <Active
+                      className="text-slate-600 font-semibold"
+                      to={"/message"}
+                    >
+                      <FiMessageSquare className="text-3xl"></FiMessageSquare>
+                    </Active>
+                  </li>
+                  <li>
+                    <Active
+                      className="text-slate-600 font-semibold"
                       to={"/about"}
                     >
-                      About
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/skills"}
-                    >
-                      Skills
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/services"}
-                    >
-                      Services
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/portfolio"}
-                    >
-                      Portfolio
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"#blog"}
-                    >
-                      Blog
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/contact"}
-                    >
-                      Contact
+                      <FcAbout className="text-3xl"/>
                     </Active>
                   </li>
               </ul>

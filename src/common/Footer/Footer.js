@@ -3,7 +3,7 @@ import { BsFacebook, BsGithub, BsInstagram, BsLinkedin, BsTwitter } from 'react-
 import {AiFillInstagram} from 'react-icons/ai'
 import { Link } from 'react-router-dom';
 
-import './Footer.css'
+// import './Footer.css'
 const Footer = () => {
   return (
     <div className='bg-[#e7e7e7] dark:bg-[#1a1c20] shadow-2xl'>
