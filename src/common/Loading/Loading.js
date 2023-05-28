@@ -1,5 +1,5 @@
 import React from 'react';
-import './Loading.css'
+// import './Loading.css'
 const Loading = () => {
   return (
     <div className='my-6 text-center fixed top-[40%] left-[50%] z-[1111111]'>

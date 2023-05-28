@@ -3,13 +3,22 @@ import { BiUserCircle } from "react-icons/bi";
 import { FcAbout } from "react-icons/fc";
 import { FiMessageSquare } from "react-icons/fi";
 import { RiArrowDownSFill, RiMoonFoggyFill } from "react-icons/ri";
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 import { CiLight } from "react-icons/ci";
 import { AiFillFire, AiFillHome, AiOutlineFieldTime } from 'react-icons/ai';
 import Active from "../Active/Active";
 
 import './Navbar.css'
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
+import Loading from "../Loading/Loading";
 const Navbar = () => {
+  const [user, loading, error] = useAuthState(auth);
+  // logOut
+  const logout = () => {
+    signOut(auth);
+  };
   // Dark Mode setup
   const [theme, setTheme] = useState(null);
 
@@ -21,6 +30,8 @@ const Navbar = () => {
       setTheme('light');
     }
   }, [])
+
+
 
   useEffect(() => {
     if (theme === "dark") {
@@ -46,8 +57,13 @@ const Navbar = () => {
   //   }
   // };
   // window.addEventListener("scroll", changeBg);
-
-
+  if (loading) {
+    return <Loading></Loading>
+  }
+  if (error) {
+    return console.log(error);
+  }
+  console.log(user?.photoURL);
   return (
     <nav className='bg-[#fff] dark:bg-[#122033]  shadow-2xl fixed w-full'>
       <div className="container mx-auto px-2">
@@ -155,12 +171,12 @@ const Navbar = () => {
             <div className="navbar-center hidden lg:flex">
               {/* main menu */}
               <ul className="menu menu-horizontal p-0 ">
-              <li>
-                    <Active className="text-slate-600 font-semibold" to="">
-                      <AiFillHome className="text-3xl"></AiFillHome>
-                    </Active>
-                  </li>
-                  {/* <li tabIndex={0}>
+                <li>
+                  <Active className="text-slate-600 font-semibold" to="">
+                    <AiFillHome className="text-3xl"></AiFillHome>
+                  </Active>
+                </li>
+                {/* <li tabIndex={0}>
                     <a className="text-[#9298A0] font-semibold">
                       Page{" "}
                       <RiArrowDownSFill className="text-xl"></RiArrowDownSFill>
@@ -174,41 +190,41 @@ const Navbar = () => {
                       </li>
                     </ul>
                   </li> */}
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/viral"}
-                    >
-                      <AiOutlineFieldTime className="text-3xl"/>
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/viral"}
-                    >
-                      <AiFillFire className="text-3xl"></AiFillFire>
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/message"}
-                    >
-                      <FiMessageSquare className="text-3xl"></FiMessageSquare>
-                    </Active>
-                  </li>
-                  <li>
-                    <Active
-                      className="text-slate-600 font-semibold"
-                      to={"/about"}
-                    >
-                      <FcAbout className="text-3xl"/>
-                    </Active>
-                  </li>
+                <li>
+                  <Active
+                    className="text-slate-600 font-semibold"
+                    to={"/viral"}
+                  >
+                    <AiOutlineFieldTime className="text-3xl" />
+                  </Active>
+                </li>
+                <li>
+                  <Active
+                    className="text-slate-600 font-semibold"
+                    to={"/viral"}
+                  >
+                    <AiFillFire className="text-3xl"></AiFillFire>
+                  </Active>
+                </li>
+                <li>
+                  <Active
+                    className="text-slate-600 font-semibold"
+                    to={"/message"}
+                  >
+                    <FiMessageSquare className="text-3xl"></FiMessageSquare>
+                  </Active>
+                </li>
+                <li>
+                  <Active
+                    className="text-slate-600 font-semibold"
+                    to={"/about"}
+                  >
+                    <FcAbout className="text-3xl" />
+                  </Active>
+                </li>
               </ul>
             </div>
-            <div className="navbar-end">
+            <div className="navbar-end items-center">
               <div className="flex-none">
                 <div className="dropdown dropdown-end">
                   <label
@@ -224,28 +240,6 @@ const Navbar = () => {
                     </div>
                   </label>
                 </div>
-                {/* <div className="dropdown dropdown-end">
-                  <label tabIndex={0} className="btn btn-ghost btn-circle">
-                    <div className="indicator">
-                      <FaBell className="text-2xl" />
-                      <span className="badge badge-sm indicator-item">8</span>
-                    </div>
-                  </label>
-                  <div
-                    tabIndex={0}
-                    className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow-2xl rounded"
-                  >
-                    <div className="card-body">
-                      <span className="font-bold text-sm md:text-base capitalize">8 unread notification</span>
-                      <span className="text-info">Subtotal: $999</span>
-                      <div className="card-actions">
-                        <button className="btn btn-primary btn-block">
-                          View cart
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
@@ -253,14 +247,18 @@ const Navbar = () => {
                   >
                     <div className=" rounded-full ">
                       {/* profile */}
-                      <Active to={`/login`}>
-                        <BiUserCircle className="text-3xl mt-[2px]"></BiUserCircle>
-                      </Active>
+                      {
+                        user ? user?.photoURL ? <img src={user?.photoURL} className="w-[24px] h-[24px] rounded-full" alt="loading" /> : <BiUserCircle className="text-2xl mt-[2px]"></BiUserCircle>
+                          :
+                          <Active to={`/login`}>
+                            <BiUserCircle className="text-3xl mt-[2px]"></BiUserCircle>
+                          </Active>
+                      }
                     </div>
                   </label>
                   <ul
                     tabIndex={0}
-                    className="menu menu-compact dropdown-content p-2 shadow-2xl rounded  dark:bg-[#2a2d34] bg-white w-52 mt-4"
+                    className="menu menu-compact dropdown-content p-2 shadow-2xl rounded  dark:bg-[#122033] bg-white w-52 mt-4 dark:text-slate-300 text-slate-700"
                   >
                     <li>
                       <button className="justify-between">
@@ -272,7 +270,7 @@ const Navbar = () => {
                       <button>Settings</button>
                     </li>
                     <li>
-                      <button>Logout</button>
+                      <button onClick={() => logout()}>Logout</button>
                     </li>
                   </ul>
                 </div>
