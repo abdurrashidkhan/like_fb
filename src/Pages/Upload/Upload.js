@@ -33,12 +33,13 @@ const Upload = () => {
     setFile(file);
   };
   const onSubmit = (data) => {
-    const imgbbAPIKey = "e32b2607a3f00cb963832ebb13d8a672";
+    const imgbbAPIKey = "ef8e2adcf82ba9b088feff829df4d6bf";
     // const image = data.file[0];
     const image = file[0];
     const formData = new FormData();
     formData.append("image", image);
     const url = `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`;
+    const postTitle = data.postTitle;
     fetch(url, {
       method: "POST",
       body: formData,
@@ -47,25 +48,30 @@ const Upload = () => {
       .then((result) => {
         if (result.success) {
           const img = result?.data?.url;
-          const user = {
+          const title = postTitle
+          const postData = {
             image: img,
+            displayName: user?.displayName,
+            email: user?.email,
+            postTitle: title,
+            photoURL: user?.photoURL,
           };
-
-          fetch(`https://eventy-server.vercel.app/user-update/${email}`, {
-            method: "PUT",
+          console.log(postData);
+          fetch(`http://localhost:5000/post/`, {
+            method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: JSON.stringify(user),
+            body: JSON.stringify(postData),
           })
             .then((res) => res.json())
             .then((inserted) => {
               if (inserted) {
                 reset();
                 setFile(null);
-                navigate("/manage-profile");
+                navigate("/");
                 // toast.success("Profile Picture Updated Successfully");
-                setOpen(false);
+                // setOpen(false);
               }
             });
         }
@@ -86,71 +92,103 @@ const Upload = () => {
           <div className="flex gap-5 items-center">
             <div className="">
               {/* images */}
-              <FiUser className='text-4xl'></FiUser>
+              <img src={user?.photoURL} alt="loading" className='w-[36px] h-auto rounded-full'/>
             </div>
             <div className="w-full">
               <label htmlFor="my-modal" type="button" className='dark:bg-[#091527] bg-[#ececec] rounded-full pl-5 text-xl py-2 pb-3 text-[#999999] w-full focus:outline-none text-start' >
                 What's on your mind , {user?.displayName} ?
               </label>
               <input type="checkbox" id="my-modal" className="modal-toggle" />
-                  <div class="modal">
-                    <div class="modal-box rounded">
-                      <form
-                        id="post"
-                        onSubmit={handleSubmit(onSubmit)}
-                      >
+              <div class="modal">
+                <div class="modal-box rounded">
+                  <form
+                    id="post"
+                    onSubmit={handleSubmit(onSubmit)}
+                  >
+                    <label
+                      for="profile_picture"
+                      class="btn btn-sm btn-circle bg-red-500 hover:bg-red-600 border-none absolute right-2 top-2"
+                    >
+                      ✕
+                    </label>
+                    <div className="w-full">
+                      <div className="">
                         <label
-                          for="profile_picture"
-                          class="btn btn-sm btn-circle bg-red-500 hover:bg-red-600 border-none absolute right-2 top-2"
+                          htmlFor="postTitle"
+                          className="text-slate-500 font-semibold w-1/2 "
                         >
-                          ✕
+                          Post Title
                         </label>
-                        <div className="mt-10">
-                          <FileUploader
-                            handleChange={handleChange}
-                            multiple={true}
-                            name="file"
-                            types={fileTypes}
-                          />
-                          {file && (
-                            <p
-                              className={`pt-4 text-sm font-medium text-slate-700`}
-                            >
-                              {file &&
-                                `Selected File Name: ${file[0].name}`}
-                            </p>
-                          )}
-                          {!file && (
-                            <p
-                              className={`pt-4 text-sm text-red-600 font-medium`}
-                            >
-                              {!file && "No File Uploaded Yet !"}
-                            </p>
-                          )}
-                        </div>
-                        <div class="modal-action">
-                          {file ? (
-                            <label for="profile_picture" class="w-full">
-                              <input
-                                className="block w-full bg-blue-700 hover:bg-blue-600 text-white text-center py-2 rounded cursor-pointer"
-                                type="submit"
-                                value="SAVE"
-                              />
-                            </label>
-                          ) : (
-                            <label
-                              aria-disabled
-                              aria-readonly
-                              for=""
-                              class="block w-full bg-blue-200 text-white text-center py-2 rounded"
-                            >
-                              SAVE
-                            </label>
-                          )}
-                        </div>
-                      </form>
+                        <input
+                          id="postTitle"
+                          name="postTitle"
+                          type="text"
+                          className="mt-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                          placeholder="Post Title"
+                          {...register("postTitle", {
+                            required: {
+                              value: true,
+                              message: "Add Your Post Title",
+                            },
+                          })}
+                        />
+                      </div>
+                      <label className="text-left sm:text-start block">
+                        {errors.email?.type === "required" && (
+                          <span className="text-red-500 text-sm capitalize">
+                            {errors.email.message}
+                          </span>
+                        )}
+                      </label>
                     </div>
-                  </div>
+                    <div className="mt-10">
+                      <FileUploader
+                        handleChange={handleChange}
+                        multiple={true}
+                        name="file"
+                        types={fileTypes}
+                      />
+                      {file && (
+                        <p
+                          className={`pt-4 text-sm font-medium text-slate-700`}
+                        >
+                          {file &&
+                            `Selected File Name: ${file[0].name}`}
+                        </p>
+                      )}
+                      {!file && (
+                        <p
+                          className={`pt-4 text-sm text-red-600 font-medium`}
+                        >
+                          {!file && "No File Uploaded Yet !"}
+                        </p>
+                      )}
+                    </div>
+
+                    <div class="modal-action">
+                      {file ? (
+                        <label for="profile_picture" class="w-full">
+                          <input
+                            className="block w-full bg-blue-700 hover:bg-blue-600 text-white text-center py-2 rounded cursor-pointer"
+                            type="submit"
+                            value="SAVE"
+                          />
+                        </label>
+                      ) : (
+                        <label
+                          aria-disabled
+                          aria-readonly
+                          for=""
+                          class="block w-full bg-blue-200 text-white text-center py-2 rounded"
+                        >
+                          SAVE
+                        </label>
+                      )}
+                    </div>
+
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-3 items-center gap-5 justify-items-center pt-4">
