@@ -12,7 +12,7 @@ const Post = () => {
   const [post, setPost] = useState([])
 
   useEffect(() => {
-    fetch(`http://localhost:5000/post`, {
+    fetch(`https://photo-fream-server.vercel.app/post`, {
       method: "GET",
     })
       .then((res) => res.json())

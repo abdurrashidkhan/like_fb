@@ -57,7 +57,7 @@ const Upload = () => {
             photoURL: user?.photoURL,
           };
           console.log(postData);
-          fetch(`http://localhost:5000/post/`, {
+          fetch(`https://photo-fream-server.vercel.app/post/`, {
             method: "POST",
             headers: {
               "content-type": "application/json",
