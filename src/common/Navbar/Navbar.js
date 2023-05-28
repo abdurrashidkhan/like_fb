@@ -49,7 +49,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className='bg-[#000000c9]  shadow-2xl '>
+    <nav className='bg-[#fff] dark:bg-[#122033]  shadow-2xl fixed w-full'>
       <div className="container mx-auto px-2">
         {/* navbar */}
         <div className="">

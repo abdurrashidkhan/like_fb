@@ -1,6 +1,8 @@
-  @import url('https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Signika+Negative&display=swap');
+
 body {
   margin: 0;
+  font-family: 'Lato', sans-serif;
   font-family: 'Signika Negative', sans-serif;
 }
 

@@ -6,7 +6,7 @@ import { BsFillEmojiSmileFill } from "react-icons/bs";
 
 const Upload = () => {
   return (
-    <div className="bg-[#122033] shadow-2xl rounded-b">
+    <div className="dark:bg-[#122033] bg-[#fff] shadow-2xl rounded-b">
       <div className='container mx-auto px-4 py-6'>
         <div className="">
           <div className="flex gap-5 items-center">
@@ -15,7 +15,7 @@ const Upload = () => {
               <FiUser className='text-4xl'></FiUser>
             </div>
             <div className="w-full">
-              <input type="button" disabled value="What's on your mind, Rashid?" placeholder='Post here' className='bg-[#00000062] rounded-full pl-5 text-xl py-2 pb-3 text-[#999999] w-full focus:outline-none text-start' />
+              <input type="button" disabled value="What's on your mind, Rashid?" placeholder='Post here' className='dark:bg-[#091527] bg-[#ececec] rounded-full pl-5 text-xl py-2 pb-3 text-[#999999] w-full focus:outline-none text-start' />
             </div>
           </div>
           <div className="grid grid-cols-3 items-center gap-5 justify-items-center pt-4">

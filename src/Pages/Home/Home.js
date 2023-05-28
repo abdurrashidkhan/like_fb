@@ -18,7 +18,7 @@ const Home = () => {
           <Post></Post>
         </div>
         {/* right side  */}
-        <div className="w-[45%]  ml-auto bg-[#122033] shadow-2xl">
+        <div className="w-[45%]  ml-auto dark:bg-[#122033] bg-[#fff] shadow-2xl">
           <ProfileInfo></ProfileInfo>
         </div>
       </div>
